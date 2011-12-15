@@ -2,19 +2,29 @@ body { background-color:#ADADAD }
 
 
 div {
-	display: inline-block;
+	display: table-cell;
 	line-height: 31px;
 }
 
-input[type="text"],input[type="password"] {
+input {
 	background-color: #E0E0E0;
 	border: 1px solid #040303;
 	margin: 5px;
 }
 
 
-input:focus[type="text"],input:focus[type="password"]  {
+input:focus {
 	background-color: #F5F5F5;
+}
+
+
+textarea {
+	background-color: #E0E0E0;
 	border: 1px solid #040303;
 	margin: 5px;
+}
+
+
+textarea:focus {
+	background-color: #FAFAFA;
 }
