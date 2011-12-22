@@ -1,17 +1,37 @@
-body { background-color:#ADADAD }
+body { background-color:#ADADAD; }
 
 
-div {
-	display: table-cell;
-	line-height: 31px;
+.table-row {
+	clear: both;
+}
+
+.tags {
+	margin: 0px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	float: left;
+}
+
+label {
+	float:left;
+	width:40px;
 }
 
 input {
 	background-color: #E0E0E0;
 	border: 1px solid #040303;
-	margin: 5px;
+	margin: 0px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	float: left;
+	width: 500px;
+	
 }
 
+input[type="checkbox"] {
+	float: none;
+	width: 20px;
+}
 
 input:focus {
 	background-color: #F5F5F5;
@@ -21,7 +41,9 @@ input:focus {
 textarea {
 	background-color: #E0E0E0;
 	border: 1px solid #040303;
-	margin: 5px;
+	margin: 0px;
+	margin-left: 5px;
+	margin-bottom: 5px;
 }
 
 

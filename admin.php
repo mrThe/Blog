@@ -19,11 +19,22 @@ if(isset($_COOKIE['admin']) && $_COOKIE['admin']=md5($admin_pwd)) {
 		$text=mysql_escape_string(htmlspecialchars($_POST['text']));
 		
 		$pic='';
-		if(isset($_FILES["pic"]["name"]) && $_FILES["pic"]["size"]<1024*1024*2 ) {
+		if(!empty($_FILES["pic"]["tmp_name"]) && $_FILES["pic"]["size"]<1024*1024*2 ) {
 			$pic=mysql_escape_string(file_get_contents($_FILES["pic"]["tmp_name"]));
 		}
 		
+		
 		if($mysqli->query("INSERT INTO `publications` (`title`, `text`, `time`, `pic`) VALUES ('$title', '$text', '".time()."', '$pic')")) echo "Added!<br>";
+		
+		//$mysqli->insert_id;
+		$tag_query="INSERT INTO  `pub_tag` (`pub_id` ,`tag_id`) VALUES ";
+		foreach($_POST['tags'] as $tag) {
+			$tag=abs(intval($tag));
+			$tag_query.="('{$mysqli->insert_id}',  '$tag'), ";
+		}
+		if(isset($tag)) {
+			$mysqli->query(trim($tag_query,", "));
+		}
 		
 	}
 
@@ -31,24 +42,47 @@ if(isset($_COOKIE['admin']) && $_COOKIE['admin']=md5($admin_pwd)) {
 	?>
 	
 	<form method='POST' action='admin.php' enctype='multipart/form-data'>
-		<div>
-		Title:</br>
-		Pic:</br>
-		Text:</br>
-        </div>
-		
-		<div>
-			<input name="title" type="text" maxlength="255" style="width: 500px"></br>
-			<input type="file" name="pic"><br>
-			<textarea name="text" rows="20" style="width: 500px"></textarea></br>
+	
+	
+	<div class="table-row">
+		<label>Title:</label>
+		<input name="title" type="text" maxlength="255"	>
+	</div><br>
+
+	
+	<div class="table-row">
+		<label>Pic:</label>
+		<input type="file" name="pic">
+	</div><br>
+	
+	<div class="table-row">
+		<label>Text:</label>
+		<textarea name="text"  style="width: 500px; height: 200px;"></textarea>
+	</div><br>
+	
+	<div class="table-row">
+		<label>Tags:</label>
+		<div class="tags">
+			<?php
+				$result = $mysqli->query("SELECT * FROM  `tags` ");
+				while($row=$result->fetch_array(MYSQLI_ASSOC)) {
+					echo "|<input type=\"checkbox\" name=\"tags[]\" value=\"{$row['id']}\">{$row['name']} ";
+				}
+			?> |
 		</div>
-		</br>
+	</div><br>
+	
+	<div class="table-row">
+	<label>&nbsp;</label>
 		<input type="submit" value="Post!">
+	</div><br>
+			
 	</form>
 	
 	<?php
 
 } else {
+	//no auth
 	?>
 	
 	<form method='POST' action='admin.php'>
