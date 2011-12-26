@@ -1,13 +1,15 @@
 <?php
 
 class Publications extends Model {
-	protected $tableName="publications";
+
+	public function __construct() {
+		parent::__construct('publications');
+	}
+	//public function save(){ }
 	
-	public function save(){ }
+	//public function delete(){ }
 	
-	public function delete(){ }
-	
-	public function update(){ }
+	//public function update(){ }
 	
 	public function find($what="*", $limitStart=0, $limitEnd=0){
 		$pubs=parent::find($what, $limitStart, $limitEnd);
@@ -25,7 +27,7 @@ class Publications extends Model {
 	}
 	
 	public function getPublicationsByTag($id) {
-		$sql="SELECT DISTINCT id, title, text FROM `{$this->tableName}` INNER JOIN pub_tag ON pub_tag.pub_id={$this->tableName}.id WHERE pub_tag.tag_id = '$id'";
+		$sql="SELECT DISTINCT id, title, text FROM `{$this->getTable()}` INNER JOIN pub_tag ON pub_tag.pub_id={$this->getTable()}.id WHERE pub_tag.tag_id = '$id'";
 		$result=self::$db->query($sql);
 		$pubs=self::$db->getAll($result);
 		return $this->addTags($pubs);

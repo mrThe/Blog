@@ -9,6 +9,14 @@ abstract class Model {
 		self::$db=$db;
 	}
 	
+	function __construct($tableName) {
+		$this->tableName=$tableName;
+	}
+	
+	protected function getTable() {
+		return $this->tableName;
+	}
+	
 	
 	public function __set($name, $value) {
 		$this->fields[$name]=$value;
@@ -30,9 +38,9 @@ abstract class Model {
 	public function find($what="*", $limitStart=0, $limitEnd=0){
 		if(count($this->fields)==0) {
 			//$sql="SELECT $what FROM  `publications` LIMIT 0 , 30";
-			$sql="SELECT $what FROM  `{$this->tableName}` WHERE 1";
+			$sql="SELECT $what FROM  `{$this->getTable()}` WHERE 1";
 		} else {
-			$sql="SELECT * FROM  `{$this->tableName}` WHERE ";
+			$sql="SELECT * FROM  `{$this->getTable()}` WHERE ";
 		
 			$first=true;
 			foreach($this->fields as $name=>$val) {
