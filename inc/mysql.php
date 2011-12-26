@@ -4,7 +4,11 @@ include("database.php");
 class mysql extends Database {
 	
 	static function connect($login, $pwd, $database, $host="localhost") {
-		self::setDb( new mysqli($host, $login, $pwd, $database) );
+		$db=new mysqli($host, $login, $pwd, $database);
+		
+		if ($db->connect_error) die('Error!');
+		
+		self::setDb( $db );
 		self::getDb()->set_charset("utf8");
 	}
 	
