@@ -6,8 +6,7 @@ include("inc/mysql.php");
 include("inc/model.php");
 include("inc/view.php");
 
-mysql::connect($sql['user'], $sql['pass'], $sql['database'], $sql['host']);
-model::setDb(new mysql());
+model::setDb( new mysql($sql['user'], $sql['pass'], $sql['database'], $sql['host']) );
 
 //FRONT CONTROLLER
 if(isset($_GET['act']) && isset($controllers[$_GET['act']])) {

@@ -3,13 +3,14 @@ include("database.php");
 
 class mysql extends Database {
 	
-	static function connect($login, $pwd, $database, $host="localhost") {
+	public function __construct($login, $pwd, $database, $host="localhost") {
 		$db=new mysqli($host, $login, $pwd, $database);
 		
 		if ($db->connect_error) die('Error!');
 		
-		self::setDb( $db );
-		self::getDb()->set_charset("utf8");
+		$this->setDb($db);
+		$this->getDb()->set_charset("utf8");
+		return $this;
 	}
 	
 	public function query($sql) {

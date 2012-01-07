@@ -1,17 +1,17 @@
 <?php
 
 abstract class Database {
-	static private $db=false;
+	private $db=false;
 	
-	static protected function getDb() {
-		return self::$db;
+	protected function getDb() {
+		return $this->db;
 	}
 	
-	static protected function setDb($db) {
-		self::$db=$db;
+	protected function setDb($db) {
+		$this->db=$db;
 	}
 	
-	static function connect($login, $pwd, $database, $host="localhost") { }
+	public function __construct($login, $pwd, $database, $host="localhost") { }
 	
 	public function query($sql) {}
 	
