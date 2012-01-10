@@ -1,21 +1,18 @@
 <?php
-include("model/tags.php");
-include("model/publications.php");
 
-
-if(isset($_GET['tag'])) {
-	$id=abs(intval($_GET['tag']));
+class Tags_CT extends Controller {
 	
-	$Pub=new Publications();
-	$pubs=$Pub->getPublicationsByTag($id);
-} else {
-	die("oops!"); //TODO: add tag list
+	protected function _default() {
+		try {
+			$id=abs(intval($this->request->tag));
+			$pubs=Factory::getInstance()->publications->getPublicationsByTag($id);
+		} catch (Exception $e) {}
+
+		$view=new View("tpl/index.tpl");
+		$view->publications=$pubs;
+
+		$view->display();
+	}
+
 }
-
-
-$view=new View("tpl/index.tpl");
-$view->publications=$pubs;
-
-$view->display();
-
 ?>

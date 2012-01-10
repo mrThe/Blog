@@ -1,5 +1,5 @@
 <?php
-include("database.php");
+include(ROOT_PATH."/inc/database.php");
 
 class mysql extends Database {
 	

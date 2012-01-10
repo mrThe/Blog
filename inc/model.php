@@ -8,7 +8,7 @@ abstract class Model {
 	static function setDb($db) {
 		self::$db=$db;
 	}
-	
+		
 	function __construct($tableName) {
 		$this->tableName=$tableName;
 	}
@@ -29,21 +29,48 @@ abstract class Model {
 		//echo "Unsetting '$name'\n";
     }
 	
-	public function save(){ }
+	public function save(){
+			$columns="";
+			$values="";
+
+			$first=true;
+			foreach($this->fields as $name=>$val) {
+				if(is_array($val)) continue;
+				$name=addslashes($name);
+				$val=addslashes($val);
+				
+				if(!$first) {
+					$columns.=", ";
+					$values.=", ";
+				}
+				
+				$columns.="`$name`";
+				$values.="'$val'";
+				
+				$first=false;
+			}
+		
+			self::$db->query("INSERT INTO `{$this->getTable()}` ($columns) VALUES ($values)");
+			return self::$db->getLastId();
+	}
 	
-	public function delete(){ }
+	public function update(){ } //в ТЗ небыло, а я ленивый, не буду делать просто так :3
 	
-	public function update(){ }
+	public function delete($id){
+		self::$db->query("DELETE FROM `{$this->getTable()}` WHERE `id` = '$id'");
+	}
 	
-	public function find($what="*", $limitStart=0, $limitEnd=0){
+	
+	
+	public function find($what="*", $limitStart=0, $limitEnd=0, $orderby=''){
 		if(count($this->fields)==0) {
-			//$sql="SELECT $what FROM  `publications` LIMIT 0 , 30";
 			$sql="SELECT $what FROM  `{$this->getTable()}` WHERE 1";
 		} else {
 			$sql="SELECT * FROM  `{$this->getTable()}` WHERE ";
 		
 			$first=true;
 			foreach($this->fields as $name=>$val) {
+				if(is_array($val)) continue;
 				$name=addslashes($name);
 				$val=addslashes($val);
 				
@@ -56,6 +83,10 @@ abstract class Model {
 		
 		if($limitEnd!=0) {
 			$sql.=" LIMIT $limitStart , $limitEnd";
+		}
+		
+		if($orderby!='') {
+			$sql.=" order by $orderby";
 		}
 		
 		$result=self::$db->query($sql);

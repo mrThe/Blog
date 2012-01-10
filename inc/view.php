@@ -23,6 +23,18 @@ class View {
 		$data=$this->fields;
 		include($this->tpl);
 	}
+	
+	public function render($tpl) {
+		ob_start(); 
+		
+		$data=$this->fields;
+		include($tpl);
+		
+		$ob=ob_get_contents();
+		ob_end_clean();
+		
+		return $ob;
+	}
     
 }
 

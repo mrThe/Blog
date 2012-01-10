@@ -5,23 +5,32 @@ class Publications extends Model {
 	public function __construct() {
 		parent::__construct('publications');
 	}
-	//public function save(){ }
 	
-	//public function delete(){ }
+	public function save(){
+		$id=parent::save();
+		if(count($this->fields['tags'])>0) {
+			$sql="INSERT INTO `pub_tag` (`pub_id`, `tag_id`)  VALUES  ('$id', '".implode("'), ('$id', '", $this->fields['tags'])."');";
+			self::$db->query($sql);
+		}
+		return $id;
+	}
 	
-	//public function update(){ }
 	
-	public function find($what="*", $limitStart=0, $limitEnd=0){
-		$pubs=parent::find($what, $limitStart, $limitEnd);
+	public function delete($id){
+		parent::delete($id);
+		self::$db->query("DELETE FROM `pub_tag` WHERE `pub_id` = '$id'");
+	}
+	
+	
+	public function find($what="*", $limitStart=0, $limitEnd=0, $orderby=''){
+		$pubs=parent::find($what, $limitStart, $limitEnd, $orderby);
 		$pubs=$this->addTags($pubs);
 		return $pubs;
 	}
 	
 	private function addTags($pubs) {
-		require_once('model/tags.php');
-		$Tag=new Tags();
 		for($i=0;$i<count($pubs);$i++) {
-			$pubs[$i]['tags']=$Tag->getTagsByPubId($pubs[$i]['id']);
+			$pubs[$i]['tags']=Factory::getInstance()->tags->getTagsByPubId($pubs[$i]['id']);
 		}
 		return $pubs;
 	}
@@ -33,6 +42,6 @@ class Publications extends Model {
 		return $this->addTags($pubs);
 	}
 	
-	public function findSql($sql){ }
+	//public function findSql($sql){ }
 }
 ?>

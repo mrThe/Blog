@@ -18,6 +18,6 @@
                 <li><a href="#"></a></li>
                 <li><a href="#"></a></li>
 				-->
-                <li><a href="admin.php">Админка</a></li>
+                <li><a href="?act=admin">Админка</a></li>
             </ul>
         </div>
