@@ -18,7 +18,8 @@ class FrontController {
 			
 			$controller='publications';
 			
-			if(isset($this->controllers[$request->act])) {
+		
+			if(is_string($request->act) && isset($this->controllers[$request->act])) {
 				if( !$this->checkPrivilage($request->act) ) {
 					$controller='auth';
 				} else {

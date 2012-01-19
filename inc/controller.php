@@ -12,7 +12,7 @@ abstract class Controller {
 	
 	public function _run() {
 		try {
-			if(method_exists($this, $this->request->method)) {
+			if(is_string($this->request->method) && method_exists($this, $this->request->method)) {
 				if(substr($this->request->method,0,1)=="_") throw new Exception("Access error!");
 				$this->{$this->request->method}();
 			}

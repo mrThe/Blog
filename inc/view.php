@@ -24,6 +24,11 @@ class View {
 		include($this->tpl);
 	}
 	
+	public function displayJson() {
+		$data=$this->fields;
+		echo json_encode($data);
+	}
+	
 	public function render($tpl) {
 		ob_start(); 
 		

@@ -49,7 +49,7 @@ abstract class Model {
 				
 				$first=false;
 			}
-		
+
 			self::$db->query("INSERT INTO `{$this->getTable()}` ($columns) VALUES ($values)");
 			return self::$db->getLastId();
 	}
@@ -62,9 +62,9 @@ abstract class Model {
 	
 	
 	
-	public function find($what="*", $limitStart=0, $limitEnd=0, $orderby=''){
+	public function find($what="*", $limitStart=0, $limitEnd=0, $orderby='', $where="1"){
 		if(count($this->fields)==0) {
-			$sql="SELECT $what FROM  `{$this->getTable()}` WHERE 1";
+			$sql="SELECT $what FROM  `{$this->getTable()}` WHERE $where";
 		} else {
 			$sql="SELECT * FROM  `{$this->getTable()}` WHERE ";
 		
@@ -81,14 +81,14 @@ abstract class Model {
 			}
 		}
 		
-		if($limitEnd!=0) {
-			$sql.=" LIMIT $limitStart , $limitEnd";
-		}
-		
 		if($orderby!='') {
 			$sql.=" order by $orderby";
 		}
 		
+		if($limitEnd!=0) {
+			$sql.=" LIMIT $limitStart , $limitEnd";
+		}
+
 		$result=self::$db->query($sql);
 		return self::$db->getAll($result);
 	}

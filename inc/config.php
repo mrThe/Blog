@@ -10,6 +10,7 @@ $admin_pwd=md5('123');
 $controllers['auth']="controller/auth.php";
 $controllers['publications']="controller/publications.php";
 $controllers['tags']="controller/tags.php";
+$controllers['chat']="controller/chat.php";
 
 $controllers['admin']="controller/admin.php";
 
@@ -17,6 +18,7 @@ $controllers['admin']="controller/admin.php";
 $privileges['publications']="all";
 $privileges['tags']="all";
 $privileges['auth']="all";
+$privileges['chat']="all";
 
 $privileges['admin']="admin";
 ?>
