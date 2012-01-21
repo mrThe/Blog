@@ -3,10 +3,9 @@
 class Tags_CT extends Controller {
 	
 	protected function _default() {
-		try {
-			$id=abs(intval($this->request->tag));
-			$pubs=Factory::getInstance()->publications->getPublicationsByTag($id);
-		} catch (Exception $e) {}
+		if(is_null($this->request->tag)) throw new Exception("Missing param!");
+		$id=abs(intval($this->request->tag));
+		$pubs=$this->tf->publications->getPublicationsByTag($id);
 
 		$view=new View("tpl/index.tpl");
 		$view->publications=$pubs;

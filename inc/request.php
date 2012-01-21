@@ -12,7 +12,7 @@ class Request {
 		if (isset($this->request[$key])) {
 			return $this->request[$key];
 		} else {
-			throw new Exception("Not set '$key' param!");
+			return null;//throw new Exception("Not set '$key' param!");
 		}
 	}
 }

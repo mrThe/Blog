@@ -2,15 +2,15 @@
 
 class Publications extends Model {
 
-	public function __construct() {
-		parent::__construct('publications');
+	public function __construct($db, $tf) {
+		parent::__construct('publications', $db, $tf);
 	}
 	
 	public function save(){
 		$id=parent::save();
 		if(count($this->fields['tags'])>0) {
 			$sql="INSERT INTO `pub_tag` (`pub_id`, `tag_id`)  VALUES  ('$id', '".implode("'), ('$id', '", $this->fields['tags'])."');";
-			self::$db->query($sql);
+			$this->db->query($sql);
 		}
 		return $id;
 	}
@@ -18,7 +18,7 @@ class Publications extends Model {
 	
 	public function delete($id){
 		parent::delete($id);
-		self::$db->query("DELETE FROM `pub_tag` WHERE `pub_id` = '$id'");
+		$this->db->query("DELETE FROM `pub_tag` WHERE `pub_id` = '$id'");
 	}
 	
 	
@@ -30,15 +30,15 @@ class Publications extends Model {
 	
 	private function addTags($pubs) {
 		for($i=0;$i<count($pubs);$i++) {
-			$pubs[$i]['tags']=Factory::getInstance()->tags->getTagsByPubId($pubs[$i]['id']);
+			$pubs[$i]['tags']=$this->tf->tags->getTagsByPubId($pubs[$i]['id']);
 		}
 		return $pubs;
 	}
 	
 	public function getPublicationsByTag($id) {
 		$sql="SELECT DISTINCT id, title, text FROM `{$this->getTable()}` INNER JOIN pub_tag ON pub_tag.pub_id={$this->getTable()}.id WHERE pub_tag.tag_id = '$id'";
-		$result=self::$db->query($sql);
-		$pubs=self::$db->getAll($result);
+		$result=$this->db->query($sql);
+		$pubs=$this->db->getAll($result);
 		return $this->addTags($pubs);
 	}
 	

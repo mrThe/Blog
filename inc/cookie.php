@@ -9,7 +9,6 @@ class Cookie extends Request {
 	public function __set($key, $val) {
 		setcookie($key, $val, time()+3600*24*7,"/");
 	}
-	
 }
 
 ?>

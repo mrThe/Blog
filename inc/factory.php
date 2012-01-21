@@ -2,22 +2,19 @@
 	
 class Factory {
  
-    protected static $instance;  // object instance
-    protected static $classes=array();
- 
-    public static function getInstance() {
-        if ( is_null(self::$instance) ) {
-            self::$instance = new Factory;
-        }
-        return self::$instance;
-    }
+    protected $classes=array();
+    protected $db;
+    
+    public function __construct($db) {
+		$this->db=$db;
+	}
  
     public function __get($class) {
-		if(!isset(self::$classes[$class])) {
+		if(!isset($this->classes[$class])) {
 			include(ROOT_PATH."/model/$class.php");
-			self::$classes[$class]=new $class();
+			$this->classes[$class]=new $class($this->db, $this);
 		}
-		return self::$classes[$class];
+		return $this->classes[$class];
 	}
  
 }

@@ -5,33 +5,29 @@ class FrontController {
 	private $privileges;
 	private $admin_pwd;
 	private $user;
+	private $factory;
 	
-	public function __construct($controllers, $privileges, $user) {
+	public function __construct($controllers, $privileges, $user, $factory) {
 		$this->controllers=$controllers;
 		$this->privileges=$privileges;
 		$this->user=$user;
+		$this->factory=$factory;
 	}
 	
 	public function dispath($request) {
+		$controller='publications';
 		
-		try {
-			
-			$controller='publications';
-			
-		
-			if(is_string($request->act) && isset($this->controllers[$request->act])) {
-				if( !$this->checkPrivilage($request->act) ) {
-					$controller='auth';
-				} else {
-					$controller=$request->act;
-				}
+		if(is_string($request->act) && isset($this->controllers[$request->act])) {
+			if( !$this->checkPrivilage($request->act) ) {
+				$controller='auth';
+			} else {
+				$controller=$request->act;
 			}
-			
-		} catch (Exception $e) {}
+		}
 		
 		include(ROOT_PATH."/".$this->controllers[$controller]);
 		$controller=$controller."_CT";
-		$controller=new $controller($request, $this->user);
+		$controller=new $controller($request, $this->user, $this->factory);
 		$controller->_run();
 	}
 	

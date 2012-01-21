@@ -4,22 +4,18 @@ class Auth_CT extends Controller {
 
 	
 	protected function auth() {
-		try {
-			if($this->user->setAuth($this->request->pass)) {
-				header("Location: ?act=admin");
-				die();
-			}
-		} catch (Exception $e) {}
+		if(is_null($this->request->pass)) throw new Exception("Missing param!");
+		
+		if($this->user->setAuth($this->request->pass)) {
+			$this->location("?act=admin");
+		}
 	}
 	
 	
 	protected function logout() {
-		try {
-			if($this->user->logout()) {
-				header("Location: .");
-				die();
-			}
-		} catch (Exception $e) {}
+		if($this->user->logout()) {
+			$this->location(".");
+		}
 	}
 	
 	

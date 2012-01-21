@@ -3,14 +3,13 @@
 abstract class Model {
 	protected $tableName;
 	protected $fields=array();
-	static protected $db;
+	protected $db;
+	protected $tf;
 
-	static function setDb($db) {
-		self::$db=$db;
-	}
-		
-	function __construct($tableName) {
+	function __construct($tableName, $db, $tf) {
 		$this->tableName=$tableName;
+		$this->db=$db;
+		$this->tf=$tf;
 	}
 	
 	protected function getTable() {
@@ -20,13 +19,11 @@ abstract class Model {
 	
 	public function __set($name, $value) {
 		$this->fields[$name]=$value;
-        //echo "Setting '$name' to '$value'<br>";
     }
 	
 	public function __unset($name) {
 		if(isset($this->name)) return;
 		unset($this->fields[$name]);
-		//echo "Unsetting '$name'\n";
     }
 	
 	public function save(){
@@ -50,14 +47,14 @@ abstract class Model {
 				$first=false;
 			}
 
-			self::$db->query("INSERT INTO `{$this->getTable()}` ($columns) VALUES ($values)");
-			return self::$db->getLastId();
+			$this->db->query("INSERT INTO `{$this->getTable()}` ($columns) VALUES ($values)");
+			return $this->db->getLastId();
 	}
 	
 	public function update(){ } //в ТЗ небыло, а я ленивый, не буду делать просто так :3
 	
 	public function delete($id){
-		self::$db->query("DELETE FROM `{$this->getTable()}` WHERE `id` = '$id'");
+		$this->db->query("DELETE FROM `{$this->getTable()}` WHERE `id` = '$id'");
 	}
 	
 	
@@ -89,8 +86,8 @@ abstract class Model {
 			$sql.=" LIMIT $limitStart , $limitEnd";
 		}
 
-		$result=self::$db->query($sql);
-		return self::$db->getAll($result);
+		$result=$this->db->query($sql);
+		return $this->db->getAll($result);
 	}
 	
 	public function findSql($sql){ }

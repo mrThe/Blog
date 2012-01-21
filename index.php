@@ -13,12 +13,16 @@ include(ROOT_PATH."/inc/cookie.php");
 include(ROOT_PATH."/inc/factory.php");
 include(ROOT_PATH."/inc/controller.php");
 
+$tf=new Factory(new mysql($sql['user'], $sql['pass'], $sql['database'], $sql['host']));
 
-model::setDb( new mysql($sql['user'], $sql['pass'], $sql['database'], $sql['host']) );
+try {
+	$user=new User(new Cookie(), $admin_pwd);
+	$request=new Request($_REQUEST);
 
-$user=new User(new Cookie(), $admin_pwd);
-$request=new Request($_REQUEST);
-
-$fc=new FrontController($controllers, $privileges, $user);
-$fc->dispath($request);
+	$fc=new FrontController($controllers, $privileges, $user, $tf);
+	$fc->dispath($request);
+} catch (Exception $e) {
+	//need logger
+	die("Error! Details: ".$e->getMessage());
+}
 ?>

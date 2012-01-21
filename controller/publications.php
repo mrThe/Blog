@@ -3,12 +3,12 @@
 class Publications_CT extends Controller {
 	
 	protected function _default() {
-		try {
+		if(!is_null($this->request->id)) {
 			$id=abs(intval($this->request->id));
-			Factory::getInstance()->publications->id=$id;
-		} catch (Exception $e) {}
+			$this->tf->publications->id=$id;
+		}
 
-		$pubs=Factory::getInstance()->publications->find('id, title, text', 0, 0, "time DESC");
+		$pubs=$this->tf->publications->find('id, title, text', 0, 0, "time DESC");
 
 		$view=new View("tpl/index.tpl");
 		$view->publications=$pubs;

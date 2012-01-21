@@ -15,11 +15,9 @@ class User extends Model  {
 	}
 	
 	private function checkAuth() {
-		try {
 			if($this->cookie->admin==md5($this->admin_pwd)) {
 				$this->priv="admin";
 			}
-		} catch (Exception $e) {}
 	}
 	
 	public function setAuth($pass) {
