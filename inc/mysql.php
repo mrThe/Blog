@@ -14,7 +14,7 @@ class mysql extends Database {
 	}
 	
 	public function query($sql) {
-		return self::getDb()->query($sql);
+		return $this->getDb()->query($sql);
 	}
 	
 	public function getRow($query) {
@@ -22,7 +22,7 @@ class mysql extends Database {
 	}
 	
 	public function getLastId() {
-		return self::getDb()->insert_id;
+		return $this->getDb()->insert_id;
 	}
 	
 	public function getAll($query) {
