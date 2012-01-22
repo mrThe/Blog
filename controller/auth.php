@@ -4,9 +4,7 @@ class Auth_CT extends Controller {
 
 	
 	protected function auth() {
-		if(is_null($this->request->pass)) throw new Exception("Missing param!");
-		
-		if($this->user->setAuth($this->request->pass)) {
+		if($this->user->setAuth($this->request->getParam("pass"))) {
 			$this->location("?act=admin");
 		}
 	}

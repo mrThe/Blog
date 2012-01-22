@@ -15,13 +15,14 @@ class FrontController {
 	}
 	
 	public function dispath($request) {
-		$controller='publications';
+		$controller="publications";
 		
-		if(is_string($request->act) && isset($this->controllers[$request->act])) {
-			if( !$this->checkPrivilage($request->act) ) {
+		$act=$request->getParam("act", "publications");
+		if(isset($this->controllers[$act])) {
+			if( !$this->checkPrivilage($act) ) {
 				$controller='auth';
 			} else {
-				$controller=$request->act;
+				$controller=$act;
 			}
 		}
 		

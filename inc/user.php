@@ -15,7 +15,7 @@ class User extends Model  {
 	}
 	
 	private function checkAuth() {
-			if($this->cookie->admin==md5($this->admin_pwd)) {
+			if($this->cookie->getParam("admin","")==md5($this->admin_pwd)) {
 				$this->priv="admin";
 			}
 	}

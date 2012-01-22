@@ -3,8 +3,7 @@
 class Chat_CT extends Controller {
 	
 	protected function getjson() {
-		if(is_null($this->request->lastmessage)) throw new Exception("Missing param!");
-		$lastmessage=abs(intval($this->request->lastmessage));		
+		$lastmessage=abs(intval($this->request->getParam("lastmessage")));		
 		
 		$view=new View("");
 		$view->messages=$this->tf->chat->find('id, name, text', 0, 0, "id ASC", "id > '$lastmessage'");
@@ -14,10 +13,8 @@ class Chat_CT extends Controller {
 	}
 	
 	protected function add() {
-		if(is_null($this->request->name) or is_null($this->request->message)) throw new Exception("Missing param!");
-		
-		$this->tf->chat->name=htmlspecialchars($this->request->name);
-		$this->tf->chat->text=htmlspecialchars($this->request->message);
+		$this->tf->chat->name=htmlspecialchars($this->request->getParam("name"));
+		$this->tf->chat->text=htmlspecialchars($this->request->getParam("message"));
 		$this->tf->chat->save();
 		
 		die;

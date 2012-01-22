@@ -2,8 +2,8 @@
 
 class Tags extends Model {
 	
-	public function __construct($db, $tf) {
-		parent::__construct('tags', $db, $tf);
+	public function __construct() {
+		parent::__construct('tags');
 	}
 
 	

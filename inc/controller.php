@@ -12,10 +12,12 @@ abstract class Controller {
 	}
 	
 	public function _run() {
-		if(is_string($this->request->method) && method_exists($this, $this->request->method)) {
-			if(substr($this->request->method,0,1)=="_") throw new Exception("Access error!");
-			$this->{$this->request->method}();
-		}
+		$method=$this->request->getParam("method", NULL);
+		
+		if(method_exists($this, $method)) {
+			if(substr($method,0,1)=="_") throw new Exception("Access error!");
+			$this->{$method}();
+		}		
 				
 		$this->_default();
 	}

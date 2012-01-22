@@ -6,16 +6,21 @@ abstract class Model {
 	protected $db;
 	protected $tf;
 
-	function __construct($tableName, $db, $tf) {
+	function __construct($tableName) {
 		$this->tableName=$tableName;
-		$this->db=$db;
-		$this->tf=$tf;
 	}
 	
 	protected function getTable() {
 		return $this->tableName;
 	}
 	
+	public function setDb($db) {
+		$this->db=$db;
+	}
+
+	public function setTablesFactory($tf){
+		$this->tf=$tf;
+	}
 	
 	public function __set($name, $value) {
 		$this->fields[$name]=$value;

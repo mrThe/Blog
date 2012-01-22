@@ -2,8 +2,8 @@
 
 class Publications extends Model {
 
-	public function __construct($db, $tf) {
-		parent::__construct('publications', $db, $tf);
+	public function __construct() {
+		parent::__construct('publications');
 	}
 	
 	public function save(){
